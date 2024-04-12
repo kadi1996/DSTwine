@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="de">
+<meta charset="UTF-8">
+<title>BCIs – Geteilte Welten</title>
+
+<head>
+    <meta charset="UTF-8">
+    <title>BCIs – Geteilte Welten</title>
+    <style>
+        body {
+            background-color: #1b1b1b;
+            color: #fff;
+            font-family: Georgia, serif;
+            font-size: 20px;
+            line-height: 1.6;
+            padding: 40px;
+            max-width: 700px;
+            margin: auto;
+        }
+
+        img {
+    width: 100%;
+    height: auto;
+}
+
+        a,
+        button {
+            color: #66ff66;
+            text-decoration: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font: inherit;
+            padding: 5px;
+            margin: 0;
+        }
+
+        a:hover,
+        button:hover {
+            text-decoration: underline;
+        }
+
+        .choice {
+            display: block;
+            margin: 20px 0;
+        }
+
+        button {
+            color: #66ff66;
+            background-color: transparent;
+            border: 2px solid #66ff66;
+            padding: 10px 20px;
+            font-size: 16px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #66ff66;
+            color: #1b1b1b;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="story"></div>
+    <div id="choices"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const storyElement = document.getElementById('story');
+            const choicesElement = document.getElementById('choices');
+            let playerName = ''; // Name des Spielers speichern 
+
+// Szene definieren / Den Spieler in die Welt einführen - Prolog 
+const scenes = {
+    start: {
+        text: `
+        <h1>BCIs – Geteilte Welten</h1> 
+        <p>Wir schreiben das Jahr 2055. Die Welt hat sich verändert, nicht durch Krieg oder Naturkatastrophen, sondern durch eine Revolution der menschlichen Kognition. Neuralink und ähnliche Brain-Computer Interfaces (BCI) sind mittlerweile allgegenwärtig.</p>
+        <img src="/jpg/bild1.jpg" alt="BCI Technologie">
+        <h2>Was sind BCIs?</h2>
+        <p>Brain-Computer Interfaces (BCIs) sind technologische Geräte, die eine direkte Kommunikation zwischen dem menschlichen Gehirn und externen Geräten ermöglichen. Diese Interfaces erfassen, übersetzen und nutzen Gehirnsignale, um Computer oder Maschinen zu steuern, ohne dass physische Bewegungen notwendig sind. Hier sind einige Schlüsselaspekte, wie BCIs funktionieren und was sie ermöglichen:</p> 
+        <p>1. Sensoren und Elektroden: BCIs nutzen Sensoren und Elektroden, die auf der Kopfhaut platziert werden oder in einigen fortgeschrittenen Systemen direkt mit dem Gehirngewebe verbunden sind. Diese Sensoren erfassen neuronale Aktivität.</p>
+        <p>2. Signalverarbeitung: Die von den Sensoren erfassten Signale werden von Algorithmen analysiert und in Befehle umgewandelt, die von Computern verstanden werden können. Diese Verarbeitung ermöglicht es dem Nutzer, durch Gedanken Computeranwendungen zu steuern oder mit virtuellen oder erweiterten Realitäten zu interagieren.</p>
+        <p>3. Kommunikation und Steuerung: Die Endgeräte, die durch BCIs gesteuert werden, können so vielfältig sein wie Computer, Roboterarme, elektrische Rollstühle oder sogar andere elektronische Geräte im Haushalt. BCIs werden auch in der Medizin verwendet, um Menschen mit körperlichen Einschränkungen zu helfen, ihre Umwelt besser zu kontrollieren und zu interagieren.</p>
+        <p>4. Lern- und Anpassungsfähigkeit: Moderne BCIs sind in der Lage, von den Nutzern zu lernen. Durch fortlaufende Nutzung passen sich die Algorithmen besser an die individuellen Gehirnmuster an, was die Effizienz und Genauigkeit der Interface-Steuerung verbessert.</p>
+        <h3>Fakt ist...</h3>
+        <p>...BCIs haben die Welt verändert und das menschliche Potenzial auf unvorstellbare Weise erweitert – einige sagen zum Besseren, andere zum Schlechteren. Wie wirst du dich entscheiden? 
+                </p> `, 
+        
+        choices: [
+            { text: 'Starte die Geschichte', nextScene: 'getName' }
+        ]
+    },
+
+        // Spieler bekommt den Kontext vermittelt, Disparitäten zwischen BCI und Non-BCI werden klar vermittelt 
+        getName: {
+            text: `
+            <p>In den Metropolen der Welt navigieren Menschen mit unglaublicher Leichtigkeit durch das Leben. Sie sprechen jede Sprache, beherrschen jede Fähigkeit und sind durch ihre BCIs stets miteinander verbunden. Doch diese nahtlose Integration hat ihren Preis: Die Privatsphäre ist ein Konzept der Vergangenheit, und nicht jeder ist bereit, diesen Preis zu zahlen.</p>
+            <img src="/jpg/bild2.jpg" alt="utopia">
+            <p>Am Rande dieser glitzernden Städte liegen die Ghettos. Hier leben diejenigen, die sich gegen das BCI entschieden haben oder denen die Technologie verwehrt bleibt. Abgeschnitten von den Privilegien der vernetzten Welt, klammern sie sich an traditionelles Wissen und Handwerk. Sie bilden eine unterdrückte Schicht, die mit jedem Tag kämpft – nicht nur ums Überleben, sondern auch um Anerkennung und Grundrechte.</p>
+            <img src="/jpg/bild3.jpg" alt="dystopia">
+            <p>Du stehst am Scheideweg. Heute musst du eine Entscheidung treffen, die nicht nur dein Leben, sondern auch das deiner Mitmenschen beeinflussen könnte. Wirst du dich für die Verbindung entscheiden und Teil der vernetzten Mehrheit werden, oder wirst du in den Ghettos bleiben, unter denen, die sich weigern, ihr Innerstes einer Maschine zu öffnen?</p>
+            <p>Bitte gib deinen Namen ein, bevor die Geschichte beginnt:</p> ` , //Spieler gibt seinen Namen ein um das Spiel endgültig zu starten
+            inputName: true, 
+            
+            choices: [
+                { text: 'Weiter', nextScene: 'introduction' }
+            ]
+        },
+
+//Spieler wird in das Twine willkommen gehießen und vor ein Dilemma gesetzt.
+introduction: {
+    text: function () {
+        return `Willkommen, ${playerName}. Deine Reise beginnt jetzt. Deine Entscheidungen formen die Welt um dich herum und enthüllen, was es wirklich bedeutet, menschlich zu sein in einer Ära der Supermenschen. Du musst dich nun dazu entscheiden, ob du ein BCI implantiert haben möchtest, oder ob du dies verwehrst. Diese Entscheidung beeinflusst den weiteren Verlauf deiner Zukunft und ist unumkehrlich.`;
+    },
+
+        //Spieler wird vor die Wahl gestellt sich für oder gegen BCI zu entscheiden (Dilemma)
+        choices: [
+            { text: 'Ich entscheide mich für das BCI', nextScene: 'HighTechUtopia' }, // führt zu utopia 
+            { text: 'Ich entscheide mich gegen das BCI', nextScene: 'RebelLeader' }
+        ]
+    },
+
+                // Spieler hat sich FÜR das BCI entschieden. (HighTech Utopia)
+                HighTechUtopia: {
+    text: `
+    <p>Nachdem du das BCI akzeptiert hast, erlebst du eine Welt, in der deine Gedanken direkten Zugriff auf Informationen und Kommunikationsnetzwerke haben. Jede mentale Anfrage wird sofort beantwortet; jede notwendige Berechnung blitzschnell durchgeführt. Du fühlst dich vernetzt und mächtig.</p>
+    <p>Dein Alltag wird durch Künstliche Intelligenz unterstützt, die alles von deiner Ernährung bis zu deinem Sozialleben optimiert. Während du in einem Netz aus nahtlos integrierter digitaler Assistenz lebst, beginnst du jedoch zu bemerken, wie wenig Kontrolle du über das hast, was privat bleibt. Deine Gedanken, Hoffnungen und sogar Ängste sind potentiell offenes Buch für jene, die das Netzwerk kontrollieren.</p>
+    <p>Eines Abends erhältst du eine Einladung zu einem exklusiven Programm, das verspricht, deine Fähigkeiten weiter zu steigern. Die Teilnahme würde jedoch tiefgreifenden Zugriff auf deine psychologischen Daten erfordern, die von der Regierung und Großkonzernen analysiert werden könnten.</p>
+    <h3>Machst du den nächsten Schritt in dieser digitalen Evolution, auch wenn es bedeutet, dass deine innersten Gedanken möglicherweise manipuliert oder gegen dich verwendet werden könnten?</h3>`,
+    choices: [
+        { text: 'Ich akzeptiere das fortschrittliche Programm', nextScene: 'HighTechUtopia2' },
+        { text: 'Ich lehne ab und suche nach Wegen, meine Privatsphäre zu schützen', nextScene: 'HighTechUtopia3' }
+    ]
+},
+
+HighTechUtopia2: {
+    text: `
+    <p>Du stimmst zu, tiefer in die Welt der erweiterten Kognition einzutauchen. Deine Intelligenz und deine sensorischen Fähigkeiten erreichen neue Höhen. Du löst komplexe Probleme mit Leichtigkeit und hast Zugang zu Erlebnissen und Emotionen, die anderen verwehrt bleiben.</p>
+    <p>Dein Erfolg in der Arbeitswelt steigt exponentiell, und du wirst zu einem leuchtenden Beispiel für das, was technologisch möglich ist. Doch mit der Zeit stellst du fest, dass deine Entscheidungen beeinflusst werden. Subtile Vorschläge und manipulierte Gedanken lenken dich, ohne dass du es merkst. Deine Autonomie schwindet, während dein öffentliches und privates Selbst immer mehr zu einer von außen gesteuerten Fassade wird.</p>
+    <p>Die Grenzen zwischen deinem wahren Selbst und dem technologisch verbesserten Ich beginnen zu verschwimmen. Ist es das wert?</p>`,
+    choices: []
+},
+
+HighTechUtopia3: {
+    text: `
+    <p>Du entscheidest dich, das Angebot abzulehnen und kämpfst um die Bewahrung deiner innersten Gedanken. Diese Entscheidung isoliert dich von den technologischen Privilegien und macht dich zu einem Außenseiter in einer Gesellschaft, die immer abhängiger von digitaler Vernetzung wird.</p>
+    <p>Du wirst skeptisch betrachtet, und deine Karriere leidet unter deinem Ruf als 'Technikfeind'. Doch du findest Gleichgesinnte, die auch um ihre persönliche Freiheit fürchten. Gemeinsam bildet ihr eine kleine, aber entschlossene Gruppe, die sich für Datenschutz und gegen die Überwachung einsetzt. Ihr Einfluss ist begrenzt, aber ihr kämpft um jede kleine Freiheit, die ihr bewahren könnt.</p>
+    <p>Die Entscheidung hat dich viel gekostet, aber du schlafst nachts besser, wissend, dass deine Gedanken deine eigenen sind. War es das wert?</p>`,
+    choices: []
+},
+
+
+                    //Spieler hat sich GEGEN das BCI entschieden. 
+                    RebelLeader: {
+                    text: `
+                    <p>Als du dich gegen das Brain-Computer Interface (BCI) entschieden hast, wusstest du, dass dein Leben nicht einfach sein würde. Doch die Realität in den Ghettos am Rande der hochtechnologischen Städte ist noch härter, als du es dir jemals vorgestellt hast. Hier, wo die "Offline" leben, herrschen Armut und Unterdrückung. Aber es gibt auch Hoffnung, denn aus der Not ist Widerstand gewachsen.</p>
+                    <p>Du hast dich schnell als eine Schlüsselfigur in der lokalen Widerstandsbewegung etabliert. Deine Fähigkeit, Menschen zu organisieren und zu inspirieren, hat dich in die Position des Anführers gebracht. Die Gruppe, die du führst, wird von der regierenden Elite und den Medien als Terroristen diffamiert, doch für die Menschen hier bist du ein Freiheitskämpfer, der für ihre Grundrechte und ihre Würde eintritt.</p>
+                    <p>Heute steht eine wichtige Entscheidung an. Eine geheime Information ist an euch gelangt, dass ein großes Unternehmen plant, ein neues BCI-Entwicklungsprojekt direkt in den Ghettos zu starten. Dies würde nicht nur das Leben vieler Menschen hier weiter erschweren, sondern auch irreversible Schäden an der letzten Bastion der persönlichen Freiheit anrichten.</p>
+                    <p>Du stehst vor einer schwierigen Wahl: Planst du einen gewagten Angriff auf das geplante Entwicklungsprojekt, um ein Zeichen zu setzen und vielleicht die Pläne zu verzögern oder gar zu stoppen? Oder suchst du nach einer friedlicheren Lösung, die vielleicht weniger Risiken birgt, aber auch weniger wirkungsvoll sein könnte?</p>`,
+                    choices: [
+                        { text: 'Führe einen Angriff aus', nextScene: 'attackPlan' },
+                        { text: 'Suche eine friedliche Lösung', nextScene: 'peacefulApproach' }
+                    ]
+                },
+
+                attackPlan: {
+                    text: `
+                    <p>Du entscheidest dich für den Angriff. Es ist ein riskantes Unterfangen, aber du bist bereit, alles zu riskieren, um die Gemeinschaft zu schützen. Die Vorbereitungen laufen auf Hochtouren, und die Spannung steigt. Jeder in deiner Gruppe weiß, dass der Erfolg nicht garantiert ist, aber die Entschlossenheit ist stark.</p>
+                    <p>Die Aktion verläuft nicht reibungslos, und es kommt zu heftigen Auseinandersetzungen. Trotz der Verluste gelingt es euch, das Projekt erheblich zu stören. Die Nachricht von eurer Tat verbreitet sich wie ein Lauffeuer und bringt neuen Schwung in die Widerstandsbewegung.</p>`,
+                    choices: []
+                },
+
+                peacefulApproach: {
+                    text: `
+                    <p>Du entscheidest dich, einen friedlicheren Weg zu suchen. Deine Strategie besteht darin, öffentliche Aufmerksamkeit für die geplanten Maßnahmen zu erzeugen und durch rechtliche und öffentliche Druckmittel gegen das Projekt vorzugehen. Du organisierst Kampagnen, sprichst bei Veranstaltungen und arbeitest mit Anwälten zusammen, um eure Rechte zu verteidigen.</p>
+                    <p>Es ist ein langsamer und mühsamer Prozess, und der Erfolg ist alles andere als sicher. Doch deine Bemühungen beginnen, Früchte zu tragen, als immer mehr Menschen sich der Sache anschließen und die Unternehmen unter Druck setzen, ihre Pläne zu überdenken.</p>`,
+                    choices: []
+                }
+
+            
+            };
+
+            function showScene(sceneName) {
+                const scene = scenes[sceneName];
+                storyElement.innerHTML = typeof scene.text === 'function' ? scene.text() : scene.text;
+                choicesElement.innerHTML = ''; // Clear previous choices
+
+                if (scene.inputName) {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.placeholder = 'Dein Name';
+                    choicesElement.appendChild(input);
+                    const button = document.createElement('button');
+                    button.textContent = scene.choices[0].text;
+                    button.onclick = () => {
+                        playerName = input.value.trim();
+                        if (playerName.length > 0) {
+                            showScene(scene.choices[0].nextScene);
+                        } else {
+                            alert('Bitte gib einen gültigen Namen ein.');
+                        }
+                    };
+                    choicesElement.appendChild(button);
+                } else {
+                    scene.choices.forEach(choice => {
+                        const button = document.createElement('button');
+                        button.textContent = choice.text;
+                        button.onclick = () => showScene(choice.nextScene);
+                        choicesElement.appendChild(button);
+                    });
+                }
+            }
+
+            // Initial call to start the story
+            showScene('start');
+        });
+    </script>
+</body>
+
+
+</html>
